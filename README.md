@@ -12,7 +12,7 @@ An intelligent Twitter bot that scrapes content from specified websites and gene
 
 1. **Clone the Repository**
     ```bash
-    git clone https://github.com/yourusername/AI-Twitter-Bot.git
+    git clone https://github.com/KarrDynamics/AI-Twitter-Bot.git
     ```
 
 2. **Install Dependencies**
