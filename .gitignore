@@ -1,0 +1,5 @@
+.env
+# Ignore scraped_sites and tweets folders
+scraped_sites/
+tweets/
+__pycache__/

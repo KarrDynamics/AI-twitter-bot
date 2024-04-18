@@ -1,5 +1,12 @@
-OPENAI_API_KEY = 'your-openai-api-key'
-TWITTER_API_KEY = 'your-twitter-api-key'
-TWITTER_API_SECRET = 'your-twitter-api-secret'
-TWITTER_ACCESS_TOKEN = 'your-twitter-access-token'
-TWITTER_ACCESS_TOKEN_SECRET = 'your-twitter-access-token-secret'
+# config.py
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+TWITTER_API_KEY = os.getenv('TWITTER_API_KEY')
+TWITTER_API_SECRET = os.getenv('TWITTER_API_SECRET')
+TWITTER_ACCESS_TOKEN = os.getenv('TWITTER_ACCESS_TOKEN')
+TWITTER_ACCESS_TOKEN_SECRET = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
+TWITTER_BEARER_TOKEN = os.getenv('TWITTER_BEARER_TOKEN')
