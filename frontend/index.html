@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generated Tweets</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <style>
+    .tweet-block {
+      border: 1px solid #e7e7e7;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 10px;
+      background-color: #fff;
+    }
+    .tweet-button {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tweet-button button {
+      background-color: #1da1f2;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .tweet-button button:hover {
+      background-color: #0d95e8;
+    }
+
+    .tweetpost {
+        font-size: 14px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="mb-4">AI Tweet (𝕏) Generator 🚀</h1>
+    <h3 class="mb-4">Create Ready-to-Post Tweets for Twitter</h2>
+    <p class="mb-4">
+      Enter the URL of the webpage you want to scrape for content. This tool will analyze the page and generate tweet-sized summaries based on the content. These tweets will be displayed below. You can post them directly to Twitter with a single click.
+    </p>
+    
+    
+    
+    <!-- URL Input Form -->
+    <div class="mb-4">
+      <label for="urlInput" class="form-label">Enter a URL to scrape:</label>
+      <input type="url" id="urlInput" class="form-control" placeholder="https://example.com" required maxlength="250">
+      <div class="mt-2">
+        <button id="generateTweetsButton" class="btn btn-primary">Generate Tweets</button>
+        <button id="clearButton" class="btn btn-secondary">Clear</button>
+      </div>
+    </div>
+    
+    <!-- Loading Message -->
+    <div id="loadingMessage" class="alert alert-info d-none">
+      Generating tweets...
+    </div>
+    
+    <!-- Tweets Display -->
+    <div id="tweets" class="row"></div>
+  </div>
+
+  <script>
+    document.getElementById('generateTweetsButton').addEventListener('click', function() {
+      const url = document.getElementById('urlInput').value;
+      const loadingMessage = document.getElementById('loadingMessage');
+      const tweetContainer = document.getElementById('tweets');
+
+      if (url) {
+        // Show loading message and Lottie animation
+        loadingMessage.classList.remove('d-none');
+
+        fetch('/api/generate-tweets', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ url })
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Hide loading message and Lottie animation
+          loadingMessage.classList.add('d-none');
+
+          if (data.error) {
+            alert(`Error: ${data.error}`);
+          } else {
+            tweetContainer.innerHTML = '';
+            console.log('Tweets received:', data);
+            data.forEach(tweet => {
+              const tweetElement = document.createElement('div');
+              tweetElement.classList.add('col-md-3');
+              tweetElement.innerHTML = `
+                <div class="tweet-block">
+                  <p class="tweetpost">${tweet}</p>
+                  <div class="tweet-button">
+                    <button onclick="tweet('${tweet.replace(/'/g, "\\'")}')">Tweet</button>
+                  </div>
+                </div>
+              `;
+              tweetContainer.appendChild(tweetElement);
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Hide loading message and Lottie animation
+          loadingMessage.classList.add('d-none');
+          alert('Failed to generate tweets.');
+        });
+      } else {
+        alert('Please enter a valid URL.');
+      }
+    });
+
+    document.getElementById('clearButton').addEventListener('click', function() {
+      document.getElementById('urlInput').value = '';
+      document.getElementById('tweets').innerHTML = '';
+    });
+
+    function tweet(content) {
+      const tweetText = encodeURIComponent(content);
+      const twitterUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+      window.open(twitterUrl, '_blank');
+    }
+  </script>
+</body>
+</html>

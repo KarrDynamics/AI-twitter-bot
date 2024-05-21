@@ -1,5 +1,15 @@
+# Environment variable file
 .env
-# Ignore scraped_sites and tweets folders
+
+# Ignore node modules directory
+node_modules/
+
+# Ignore Python cache files
+__pycache__/
+
+# Ignore folders containing scraped sites and tweets
 scraped_sites/
 tweets/
-__pycache__/
+
+# Ignore temporary tweets file
+temp_tweets.json
